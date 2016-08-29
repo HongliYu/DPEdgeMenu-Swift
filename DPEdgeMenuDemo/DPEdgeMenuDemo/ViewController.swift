@@ -11,7 +11,9 @@ import UIKit
 class ViewController: UIViewController {
   
   var edgeMenu: DPEdgeMenu?
-
+  var logInfo: String = "Log:"
+  @IBOutlet var logLabel: UILabel!
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -63,7 +65,8 @@ class ViewController: UIViewController {
     self.edgeMenu = DPEdgeMenu.init(
       items: [buttonA, buttonB, buttonC, buttonD],
       animationDuration: 0.8,
-      menuPosition: .Right)
+      menuPosition: .Right) // four directions
+    
     self.edgeMenu?.backgroundColor = UIColor.clearColor()
     self.edgeMenu?.itemSpacing = 5.0
     self.edgeMenu?.animationDuration = 0.5
@@ -88,19 +91,24 @@ class ViewController: UIViewController {
   }
   
   func doActionA(sender: AnyObject?) {
-    print("A action")
+    self.refreshLog("[A]")
   }
   
   func doActionB(sender: AnyObject?) {
-    print("B action")
+    self.refreshLog("[B]")
   }
   
   func doActionC(sender: AnyObject?) {
-    print("C action")
+    self.refreshLog("[C]")
   }
   
   func doActionD(sender: AnyObject?) {
-    print("D action")
+    self.refreshLog("[D]")
+  }
+  
+  func refreshLog(logInfo: String) {
+    self.logInfo += logInfo
+    self.logLabel.text = self.logInfo
   }
 
   override func didReceiveMemoryWarning() {
