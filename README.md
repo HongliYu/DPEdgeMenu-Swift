@@ -65,3 +65,5 @@ simple menu appear from four directions of screen edge
     self.edgeMenu?.animationDuration = 0.5
     self.edgeMenu?.open()
 ```
+# Thanks
+@HeshamMegid, [Objective-C code](https://github.com/HeshamMegid/HMSideMenu) 
