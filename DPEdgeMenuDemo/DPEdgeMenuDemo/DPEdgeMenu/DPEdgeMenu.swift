@@ -12,10 +12,10 @@ import QuartzCore
 
 var kActionHandlerTapBlockKey: UInt8 = 0
 
-typealias TapGestureClosure = ((tapGesture: UITapGestureRecognizer)->Void)
+typealias TapGestureClosure = ((_ tapGesture: UITapGestureRecognizer)->Void)
 typealias EasingClosure = ((CGFloat, CGFloat, CGFloat, CGFloat)->CGFloat)
 
-public class ClosureWrapper: NSObject, NSCopying { // tricks: convert Closure to AnyObject, wrapper it...
+open class ClosureWrapper: NSObject, NSCopying { // tricks: convert Closure to AnyObject, wrapper it...
   
   var closure: TapGestureClosure?
   
@@ -27,7 +27,7 @@ public class ClosureWrapper: NSObject, NSCopying { // tricks: convert Closure to
     self.closure = closure
   }
   
-  public func copyWithZone(zone: NSZone) -> AnyObject {
+  open func copy(with zone: NSZone?) -> Any {
     let closureWrapper: ClosureWrapper = ClosureWrapper.init()
     closureWrapper.closure = self.closure
     return closureWrapper
@@ -37,11 +37,11 @@ public class ClosureWrapper: NSObject, NSCopying { // tricks: convert Closure to
 
 extension UIView {
   
-  func setOpacity(opacity: Float) {
+  func setOpacity(_ opacity: Float) {
     self.layer.opacity = opacity
   }
   
-  func setMenuActionWithBlock(actionBlock: TapGestureClosure?) {
+  func setMenuActionWithBlock(_ actionBlock: TapGestureClosure?) {
     let gesture: UITapGestureRecognizer = UITapGestureRecognizer.init(target: self,
                                                                       action: #selector(tapActionHandler(_:)))
     self.addGestureRecognizer(gesture)
@@ -49,11 +49,11 @@ extension UIView {
                              ClosureWrapper(actionBlock), objc_AssociationPolicy.OBJC_ASSOCIATION_COPY)
   }
   
-  func tapActionHandler(gesture: UITapGestureRecognizer) {
-    if gesture.state == .Recognized {
+  func tapActionHandler(_ gesture: UITapGestureRecognizer) {
+    if gesture.state == .recognized {
       let closureWrapper: ClosureWrapper? = objc_getAssociatedObject(self, &kActionHandlerTapBlockKey) as? ClosureWrapper
       let actionBlock: TapGestureClosure? = closureWrapper?.closure
-      actionBlock?(tapGesture: gesture)
+      actionBlock?(gesture)
     }
   }
   
@@ -61,20 +61,20 @@ extension UIView {
 
 // DPSideMenuPosition
 public enum DPBoundaryMenuPosition: Int {
-  case Left = 0
-  case Top
-  case Right
-  case Bottom
+  case left = 0
+  case top
+  case right
+  case bottom
   
   var description: String {
     switch self {
-    case .Left:
+    case .left:
       return "DPBoundaryMenuPositionLeft"
-    case .Top:
+    case .top:
       return "DPBoundaryMenuPositionTop"
-    case .Right:
+    case .right:
       return "DPBoundaryMenuPositionRight"
-    case .Bottom:
+    case .bottom:
       return "DPBoundaryMenuPositionBottom"
     }
   }
@@ -84,7 +84,7 @@ public enum DPBoundaryMenuPosition: Int {
 let kAnimationDelay: Double = 0.08
 let kDefaultAnimationDuration: CGFloat = 1.3
 
-public class DPEdgeMenu: UIView {
+open class DPEdgeMenu: UIView {
 
   var opened: Bool?
   var animationDuration: CGFloat?
@@ -92,37 +92,37 @@ public class DPEdgeMenu: UIView {
   var items: [UIView]?
   var itemSpacing: CGFloat?
   
-  private var menuIsVertical: Bool? {
+  fileprivate var menuIsVertical: Bool? {
     set(menuIsVertical) {
       self.menuIsVertical = menuIsVertical
     }
     get {
-      if self.menuPosition == .Left || self.menuPosition == .Right {
+      if self.menuPosition == .left || self.menuPosition == .right {
         return true
       }
       return false
     }
   }
-  private var menuWidth: CGFloat?
-  private var menuHeight: CGFloat?
+  fileprivate var menuWidth: CGFloat?
+  fileprivate var menuHeight: CGFloat?
   
   public init(items: [UIView]?) {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
     self.resetItems(items)
     self.animationDuration = kDefaultAnimationDuration
-    self.menuPosition = .Right
+    self.menuPosition = .right
   }
   
   public init(items: [UIView]?,
               animationDuration: CGFloat?,
               menuPosition: DPBoundaryMenuPosition?) {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
     self.resetItems(items)
     self.animationDuration = animationDuration ?? kDefaultAnimationDuration
-    self.menuPosition = menuPosition ?? .Right
+    self.menuPosition = menuPosition ?? .right
   }
   
-  private func resetItems(items: [UIView]?) {
+  fileprivate func resetItems(_ items: [UIView]?) {
     if items != nil {
       for item: UIView in items! {
         item.layer.opacity = 0
@@ -139,35 +139,33 @@ public class DPEdgeMenu: UIView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  public func open() {
+  open func open() {
     self.opened = true
     if self.items != nil {
-      for item in self.items!.enumerate() {
-        let delayInSeconds: Float = Float(kAnimationDelay * Double(item.index))
-        let popTime: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW,
-                                                     Int64(delayInSeconds * Float(NSEC_PER_SEC)))
-        dispatch_after(popTime, dispatch_get_main_queue()) {
+      for item in self.items!.enumerated() {
+        let delayInSeconds: Float = Float(kAnimationDelay * Double(item.offset))
+        let popTime: DispatchTime = DispatchTime.now() + Double(Int64(delayInSeconds * Float(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: popTime) {
           self.showItem(item.element)
         }
       }
     }
   }
   
-  public func close() {
+  open func close() {
     self.opened = false
     if self.items != nil {
-      for item in self.items!.enumerate() {
-        let delayInSeconds: Float = Float(kAnimationDelay * Double(item.index))
-        let popTime: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW,
-                                                     Int64(delayInSeconds * Float(NSEC_PER_SEC)))
-        dispatch_after(popTime, dispatch_get_main_queue()) {
+      for item in self.items!.enumerated() {
+        let delayInSeconds: Float = Float(kAnimationDelay * Double(item.offset))
+        let popTime: DispatchTime = DispatchTime.now() + Double(Int64(delayInSeconds * Float(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: popTime) {
           self.hideItem(item.element)
         }
       }
     }
   }
   
-  @objc private func showItem(item: UIView?) {
+  @objc fileprivate func showItem(_ item: UIView?) {
     if item == nil {
       return
     }
@@ -175,13 +173,13 @@ public class DPEdgeMenu: UIView {
     var position: CGPoint = item!.layer.position
     if self.menuIsVertical == true {
       position.x = self.menuWidth! / 2.0 // TODO: mark
-      position.x += self.menuPosition == .Right ? -self.menuWidth! : self.menuWidth!
+      position.x += self.menuPosition == .right ? -self.menuWidth! : self.menuWidth!
       self.animate(item!.layer,
                    keyPath: "position.x",
                    endValue: position.x)
     } else {
       position.y = self.menuHeight! / 2.0
-      position.y += self.menuPosition == .Top ? self.menuHeight! : -self.menuHeight!
+      position.y += self.menuPosition == .top ? self.menuHeight! : -self.menuHeight!
       self.animate(item!.layer,
                    keyPath: "position.y",
                    endValue: position.y)
@@ -189,20 +187,20 @@ public class DPEdgeMenu: UIView {
     item!.layer.position = position
   }
   
-  @objc private func hideItem(item: UIView?) {
+  @objc fileprivate func hideItem(_ item: UIView?) {
     if item == nil || self.menuWidth == nil || self.menuHeight == nil {
       return
     }
     var position: CGPoint = item!.layer.position
     if self.menuIsVertical == true {
-      position.x = self.menuPosition == .Right ? -self.menuWidth! / 2.0 : self.menuWidth! * 1.5
-      position.x += self.menuPosition == .Right ? self.menuWidth! : -self.menuWidth!
+      position.x = self.menuPosition == .right ? -self.menuWidth! / 2.0 : self.menuWidth! * 1.5
+      position.x += self.menuPosition == .right ? self.menuWidth! : -self.menuWidth!
       self.animate(item!.layer,
                    keyPath: "position.x",
                    endValue: position.x)
     } else {
-      position.y = self.menuPosition == .Top ? self.menuHeight! * 1.5 : -self.menuHeight! / 2.0
-      position.y += self.menuPosition == .Top ? -self.menuHeight! : self.menuHeight!
+      position.y = self.menuPosition == .top ? self.menuHeight! * 1.5 : -self.menuHeight! / 2.0
+      position.y += self.menuPosition == .top ? -self.menuHeight! : self.menuHeight!
       self.animate(item!.layer,
                    keyPath: "position.y",
                    endValue: position.y)
@@ -212,17 +210,17 @@ public class DPEdgeMenu: UIView {
   }
   
   // MARK: UIView
-  override public func pointInside(point: CGPoint,
-                                   withEvent event: UIEvent?) -> Bool {
+  override open func point(inside point: CGPoint,
+                                   with event: UIEvent?) -> Bool {
     for item in self.items! {
-      if (CGRectContainsPoint(item.frame, point)) {
+      if (item.frame.contains(point)) {
         return true
       }
     }
     return false
   }
   
-  public override func layoutSubviews() {
+  open override func layoutSubviews() {
     super.layoutSubviews()
     
     if self.items == nil {
@@ -236,14 +234,14 @@ public class DPEdgeMenu: UIView {
     
     // Calculate the menu size
     if (self.menuIsVertical == true) {
-      for item in self.items!.enumerate() {
+      for item in self.items!.enumerated() {
         self.menuWidth = max(item.element.frame.size.width , self.menuWidth!)
         biggestHeight = max(item.element.frame.size.height, biggestHeight)
       }
       self.menuHeight = (biggestHeight * CGFloat(self.items!.count))
         + (self.itemSpacing! * (CGFloat(self.items!.count) - 1))
     } else {
-      for item in self.items!.enumerate() {
+      for item in self.items!.enumerated() {
         self.menuHeight = max(item.element.frame.size.height, self.menuHeight!)
         biggestWidth = max(item.element.frame.size.width, biggestWidth)
       }
@@ -256,35 +254,35 @@ public class DPEdgeMenu: UIView {
     var itemInitialX: CGFloat = 0
     
     if self.menuIsVertical == true {
-      x = self.menuPosition == .Right ? self.superview!.frame.size.width : 0 - self.menuWidth!
+      x = self.menuPosition == .right ? self.superview!.frame.size.width : 0 - self.menuWidth!
       y  = (self.superview!.frame.size.height / 2.0) - (self.menuHeight! / 2.0)
       itemInitialX = self.menuWidth! / 2.0
     } else {
       x = self.superview!.frame.size.width / 2.0 - (self.menuWidth! / 2.0)
-      y = self.menuPosition == .Top ? 0 - self.menuHeight! : self.superview!.frame.size.height
+      y = self.menuPosition == .top ? 0 - self.menuHeight! : self.superview!.frame.size.height
     }
-    self.frame = CGRectMake(x, y, self.menuWidth!, self.menuHeight!)
+    self.frame = CGRect(x: x, y: y, width: self.menuWidth!, height: self.menuHeight!)
     // Layout the items
-    for item in self.items!.enumerate() {
+    for item in self.items!.enumerated() {
       if self.menuIsVertical == true {
-        item.element.center = CGPointMake(itemInitialX, (CGFloat(item.index) * biggestHeight)
-          + (CGFloat(item.index) * self.itemSpacing!) + (biggestHeight / 2.0))
+        item.element.center = CGPoint(x: itemInitialX, y: (CGFloat(item.offset) * biggestHeight)
+          + (CGFloat(item.offset) * self.itemSpacing!) + (biggestHeight / 2.0))
         
         var position: CGPoint = item.element.layer.position
         if self.opened == true {
-          position.x = self.menuPosition == .Right ? -self.menuWidth! / 2.0 : self.menuWidth! * 1.5
+          position.x = self.menuPosition == .right ? -self.menuWidth! / 2.0 : self.menuWidth! * 1.5
         } else {
           position.x = self.menuWidth! / 2.0 // TODO: mark
         }
         item.element.layer.position = position
         
       } else {
-        item.element.center = CGPointMake((CGFloat(item.index) * biggestWidth)
-          + (CGFloat(item.index) * self.itemSpacing!) + (biggestWidth / 2.0), self.menuHeight! / 2.0)
+        item.element.center = CGPoint(x: (CGFloat(item.offset) * biggestWidth)
+          + (CGFloat(item.offset) * self.itemSpacing!) + (biggestWidth / 2.0), y: self.menuHeight! / 2.0)
         
         var position: CGPoint = item.element.layer.position
         if self.opened == true {
-          position.y = self.menuPosition == .Top ? self.menuHeight! * 1.5 : -self.menuHeight! / 2.0
+          position.y = self.menuPosition == .top ? self.menuHeight! * 1.5 : -self.menuHeight! / 2.0
         } else {
           position.y = self.menuHeight! / 2.0
         }
@@ -296,14 +294,14 @@ public class DPEdgeMenu: UIView {
   }
   
   // MARK: Animation
-  private func animate(layer: CALayer?,
+  fileprivate func animate(_ layer: CALayer?,
                        keyPath: String?,
                        endValue: CGFloat?) {
-    let startValue: CGFloat = layer!.valueForKeyPath(keyPath!) as! CGFloat
+    let startValue: CGFloat = layer!.value(forKeyPath: keyPath!) as! CGFloat
     let animation: CAKeyframeAnimation = CAKeyframeAnimation.init(keyPath: keyPath)
     animation.timingFunction = CAMediaTimingFunction.init(name: kCAMediaTimingFunctionLinear)
     animation.fillMode = kCAFillModeForwards
-    animation.removedOnCompletion = false
+    animation.isRemovedOnCompletion = false
     animation.duration = Double(self.animationDuration!)
     let steps: CGFloat = 100
     let delta: CGFloat = endValue! - startValue
@@ -315,7 +313,7 @@ public class DPEdgeMenu: UIView {
         startValue, delta, CGFloat(animation.duration)))
     }
     animation.values = values
-    layer!.addAnimation(animation, forKey: nil)
+    layer!.add(animation, forKey: nil)
   }
   
   let easeOutElastic: EasingClosure = { (t: CGFloat, b: CGFloat,

@@ -17,57 +17,57 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let buttonA = UIButton.init(frame: CGRectMake(0, 0, 40, 40))
-    buttonA.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-    buttonA.setTitle("A", forState: .Normal)
+    let buttonA = UIButton.init(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+    buttonA.setTitleColor(UIColor.white, for: UIControlState())
+    buttonA.setTitle("A", for: UIControlState())
     buttonA.backgroundColor = UIColor.init(colorLiteralRed: 237.0 / 255.0,
                                            green: 140.0 / 255.0,
                                            blue: 52.0 / 255.0,
                                            alpha: 1.0)
     buttonA.addTarget(self,
                       action: #selector(doActionA(_:)),
-                      forControlEvents: .TouchUpInside)
+                      for: .touchUpInside)
     
-    let buttonB = UIButton.init(frame: CGRectMake(0, 0, 40, 40))
-    buttonB.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-    buttonB.setTitle("B", forState: .Normal)
+    let buttonB = UIButton.init(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+    buttonB.setTitleColor(UIColor.white, for: UIControlState())
+    buttonB.setTitle("B", for: UIControlState())
     buttonB.backgroundColor = UIColor.init(colorLiteralRed: 140.0 / 255.0,
                                            green: 155.0 / 255.0,
                                            blue: 237.0 / 255.0,
                                            alpha: 1.0)
     buttonB.addTarget(self,
                       action: #selector(doActionB(_:)),
-                      forControlEvents: .TouchUpInside)
+                      for: .touchUpInside)
     
     
-    let buttonC = UIButton.init(frame: CGRectMake(0, 0, 40, 40))
-    buttonC.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-    buttonC.setTitle("C", forState: .Normal)
+    let buttonC = UIButton.init(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+    buttonC.setTitleColor(UIColor.white, for: UIControlState())
+    buttonC.setTitle("C", for: UIControlState())
     buttonC.backgroundColor = UIColor.init(colorLiteralRed: 237.0 / 255.0,
                                            green: 140 / 255.0,
                                            blue: 200.0 / 255.0,
                                            alpha: 1.0)
     buttonC.addTarget(self,
                       action: #selector(doActionC(_:)),
-                      forControlEvents: .TouchUpInside)
+                      for: .touchUpInside)
     
-    let buttonD = UIButton.init(frame: CGRectMake(0, 0, 40, 40))
-    buttonD.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-    buttonD.setTitle("D", forState: .Normal)
+    let buttonD = UIButton.init(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+    buttonD.setTitleColor(UIColor.white, for: UIControlState())
+    buttonD.setTitle("D", for: UIControlState())
     buttonD.backgroundColor = UIColor.init(colorLiteralRed: 237.0 / 255.0,
                                            green: 100.0 / 255.0,
                                            blue: 100.0 / 255.0,
                                            alpha: 1.0)
     buttonD.addTarget(self,
                       action: #selector(doActionD(_:)),
-                      forControlEvents: .TouchUpInside)
+                      for: .touchUpInside)
     
     self.edgeMenu = DPEdgeMenu.init(
       items: [buttonA, buttonB, buttonC, buttonD],
       animationDuration: 0.8,
-      menuPosition: .Right) // four directions
+      menuPosition: .right) // four directions
     
-    self.edgeMenu?.backgroundColor = UIColor.clearColor()
+    self.edgeMenu?.backgroundColor = UIColor.clear
     self.edgeMenu?.itemSpacing = 5.0
     self.edgeMenu?.animationDuration = 0.5
     self.edgeMenu?.open()
@@ -90,23 +90,23 @@ class ViewController: UIViewController {
     self.edgeMenu?.opened == true ? self.edgeMenu?.close() : self.edgeMenu?.open()
   }
   
-  func doActionA(sender: AnyObject?) {
+  func doActionA(_ sender: AnyObject?) {
     self.refreshLog("[A]")
   }
   
-  func doActionB(sender: AnyObject?) {
+  func doActionB(_ sender: AnyObject?) {
     self.refreshLog("[B]")
   }
   
-  func doActionC(sender: AnyObject?) {
+  func doActionC(_ sender: AnyObject?) {
     self.refreshLog("[C]")
   }
   
-  func doActionD(sender: AnyObject?) {
+  func doActionD(_ sender: AnyObject?) {
     self.refreshLog("[D]")
   }
   
-  func refreshLog(logInfo: String) {
+  func refreshLog(_ logInfo: String) {
     self.logInfo += logInfo
     self.logLabel.text = self.logInfo
   }
