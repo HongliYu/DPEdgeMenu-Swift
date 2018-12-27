@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "DPEdgeMenu"
-  s.version      = "0.0.2"
+  s.version      = "0.1.0"
   s.summary      = "edge menu"
 
   s.description  = <<-DESC
@@ -19,12 +19,13 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/HongliYu/DPEdgeMenu-Swift"
   s.license      = "MIT"
   s.author       = { "HongliYu" => "yhlssdone@gmail.com" }
-  s.source       = { :git => "https://github.com/HongliYu/DPEdgeMenu-Swift.git", :tag => "0.0.2" }
+  s.source       = { :git => "https://github.com/HongliYu/DPEdgeMenu-Swift.git", :tag => "#{s.version}" }
 
-  s.platform     = :ios, "8.0"
+  s.platform     = :ios, "10.0"
   s.requires_arc = true
-  s.source_files = "DPEdgeMenu/"
-  s.frameworks   = 'UIKit', 'QuartzCore', 'Foundation'
+  s.source_files = "DPEdgeMenuDemo/DPEdgeMenu/"
+  s.frameworks   = 'UIKit', 'Foundation'
   s.module_name  = 'DPEdgeMenu'
+  s.swift_version = "4.2"
 
 end
