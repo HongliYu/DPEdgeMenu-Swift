@@ -10,7 +10,7 @@ import UIKit
 
 var kActionHandlerTapBlockKey: UInt8 = 0
 
-typealias TapGestureClosure = ((_ tapGesture: UITapGestureRecognizer)->Void)
+public typealias TapGestureClosure = ((_ tapGesture: UITapGestureRecognizer)->Void)
 
 open class DPClosureWrapper: NSObject, NSCopying {
   
@@ -32,7 +32,7 @@ open class DPClosureWrapper: NSObject, NSCopying {
   
 }
 
-extension UIView {
+public extension UIView {
   
   func setOpacity(_ opacity: Float) {
     layer.opacity = opacity
