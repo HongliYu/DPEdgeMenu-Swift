@@ -32,7 +32,7 @@ class ViewController: UIViewController {
     
     edgeMenu.config(buttons)
     edgeMenu.animationDuration = 0.8
-    edgeMenu.menuPosition = .top
+    edgeMenu.menuPosition = .right
     edgeMenu.open()
 
     view.setMenu { [weak self] gesture in

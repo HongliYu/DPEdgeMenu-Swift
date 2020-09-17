@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "DPEdgeMenu"
-  s.version      = "0.1.1"
+  s.version      = "0.1.2"
   s.summary      = "edge menu"
 
   s.description  = <<-DESC
@@ -23,7 +23,7 @@ Pod::Spec.new do |s|
 
   s.platform     = :ios, "10.0"
   s.requires_arc = true
-  s.source_files = "DPEdgeMenuDemo/DPEdgeMenu/"
+  s.source_files = "Sources/DPEdgeMenu-Swift/"
   s.frameworks   = 'UIKit', 'Foundation'
   s.module_name  = 'DPEdgeMenu'
   s.swift_version = "5.0"

@@ -12,10 +12,8 @@
 		F72F6C8F1D74C750008318E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F72F6C8D1D74C750008318E0 /* Main.storyboard */; };
 		F72F6C911D74C750008318E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F72F6C901D74C750008318E0 /* Assets.xcassets */; };
 		F72F6C941D74C750008318E0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F72F6C921D74C750008318E0 /* LaunchScreen.storyboard */; };
-		F72F6C9D1D74C782008318E0 /* DPEdgeMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72F6C9C1D74C782008318E0 /* DPEdgeMenu.swift */; };
-		F79E365721D4C14E00B3913F /* DPEdgeMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72F6C9C1D74C782008318E0 /* DPEdgeMenu.swift */; };
-		F79E365821D4C14E00B3913F /* DPClosureWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E77CBB21D1A0600069E486 /* DPClosureWrapper.swift */; };
-		F7E77CBC21D1A0600069E486 /* DPClosureWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E77CBB21D1A0600069E486 /* DPClosureWrapper.swift */; };
+		F7B4D96025134B2A0048713C /* DPEdgeMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4D95E25134B2A0048713C /* DPEdgeMenu.swift */; };
+		F7B4D96125134B2A0048713C /* DPClosureWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B4D95F25134B2A0048713C /* DPClosureWrapper.swift */; };
 		F7E77CC621D1D93D0069E486 /* DPEdgeMenu.h in Headers */ = {isa = PBXBuildFile; fileRef = F7E77CC421D1D93D0069E486 /* DPEdgeMenu.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F7E77CC921D1D93D0069E486 /* DPEdgeMenu.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7E77CC221D1D93D0069E486 /* DPEdgeMenu.framework */; };
 		F7E77CCA21D1D93D0069E486 /* DPEdgeMenu.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F7E77CC221D1D93D0069E486 /* DPEdgeMenu.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -53,8 +51,8 @@
 		F72F6C901D74C750008318E0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F72F6C931D74C750008318E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F72F6C951D74C750008318E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F72F6C9C1D74C782008318E0 /* DPEdgeMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPEdgeMenu.swift; sourceTree = "<group>"; };
-		F7E77CBB21D1A0600069E486 /* DPClosureWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DPClosureWrapper.swift; sourceTree = "<group>"; };
+		F7B4D95E25134B2A0048713C /* DPEdgeMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPEdgeMenu.swift; sourceTree = "<group>"; };
+		F7B4D95F25134B2A0048713C /* DPClosureWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPClosureWrapper.swift; sourceTree = "<group>"; };
 		F7E77CC221D1D93D0069E486 /* DPEdgeMenu.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DPEdgeMenu.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7E77CC421D1D93D0069E486 /* DPEdgeMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DPEdgeMenu.h; sourceTree = "<group>"; };
 		F7E77CC521D1D93D0069E486 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -100,7 +98,7 @@
 		F72F6C881D74C750008318E0 /* DPEdgeMenuDemo */ = {
 			isa = PBXGroup;
 			children = (
-				F72F6C9B1D74C76C008318E0 /* DPEdgeMenu */,
+				F7B4D95D25134B2A0048713C /* DPEdgeMenu-Swift */,
 				F72F6C891D74C750008318E0 /* AppDelegate.swift */,
 				F72F6C8B1D74C750008318E0 /* ViewController.swift */,
 				F72F6C8D1D74C750008318E0 /* Main.storyboard */,
@@ -111,14 +109,15 @@
 			path = DPEdgeMenuDemo;
 			sourceTree = "<group>";
 		};
-		F72F6C9B1D74C76C008318E0 /* DPEdgeMenu */ = {
+		F7B4D95D25134B2A0048713C /* DPEdgeMenu-Swift */ = {
 			isa = PBXGroup;
 			children = (
-				F72F6C9C1D74C782008318E0 /* DPEdgeMenu.swift */,
-				F7E77CBB21D1A0600069E486 /* DPClosureWrapper.swift */,
+				F7B4D95E25134B2A0048713C /* DPEdgeMenu.swift */,
+				F7B4D95F25134B2A0048713C /* DPClosureWrapper.swift */,
 			);
-			path = DPEdgeMenu;
-			sourceTree = "<group>";
+			name = "DPEdgeMenu-Swift";
+			path = "Sources/DPEdgeMenu-Swift";
+			sourceTree = SOURCE_ROOT;
 		};
 		F7E77CC321D1D93D0069E486 /* DPEdgeMenu */ = {
 			isa = PBXGroup;
@@ -247,10 +246,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F72F6C9D1D74C782008318E0 /* DPEdgeMenu.swift in Sources */,
-				F7E77CBC21D1A0600069E486 /* DPClosureWrapper.swift in Sources */,
+				F7B4D96025134B2A0048713C /* DPEdgeMenu.swift in Sources */,
 				F72F6C8C1D74C750008318E0 /* ViewController.swift in Sources */,
 				F72F6C8A1D74C750008318E0 /* AppDelegate.swift in Sources */,
+				F7B4D96125134B2A0048713C /* DPClosureWrapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,8 +257,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F79E365721D4C14E00B3913F /* DPEdgeMenu.swift in Sources */,
-				F79E365821D4C14E00B3913F /* DPClosureWrapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,7 +399,6 @@
 		F72F6C991D74C750008318E0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = FC9QT6TC28;
@@ -418,7 +414,6 @@
 		F72F6C9A1D74C750008318E0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = FC9QT6TC28;
