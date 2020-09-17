@@ -10,33 +10,18 @@ import UIKit
 
 typealias EasingClosure = ((CGFloat, CGFloat, CGFloat, CGFloat) -> CGFloat)
 
-public enum DPBoundaryMenuPosition: Int {
-  
-  case left = 0
+public enum BoundaryMenuPosition {
+  case left
   case top
   case right
   case bottom
-  
-  var description: String {
-    switch self {
-    case .left:
-      return "left"
-    case .top:
-      return "top"
-    case .right:
-      return "right"
-    case .bottom:
-      return "bottom"
-    }
-  }
-  
 }
 
 open class DPEdgeMenu: UIView {
   
   private let kAnimationDelay: Double = 0.08
   open var animationDuration: Double = 1.2
-  open var menuPosition: DPBoundaryMenuPosition = .right
+  open var menuPosition: BoundaryMenuPosition = .right
   open var itemSpacing: CGFloat = 8.0
   open var opened: Bool = false
   open var items: [UIView]?
@@ -51,12 +36,25 @@ open class DPEdgeMenu: UIView {
   
   public init() {
     super.init(frame: CGRect.zero)
+    NotificationCenter
+      .default
+      .addObserver(self, selector: #selector(rotated),
+                   name: UIApplication.didChangeStatusBarOrientationNotification,
+                   object: nil)
   }
-  
+
   required public init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
+  deinit {
+    NotificationCenter
+      .default
+      .removeObserver(self,
+                      name: UIApplication.didChangeStatusBarOrientationNotification,
+                      object: nil)
+  }
+
   public func config(_ items: [UIView]) {
     self.resetItems(items)
   }
@@ -71,7 +69,11 @@ open class DPEdgeMenu: UIView {
       addSubview($0)
     }
   }
-  
+
+  @objc func rotated() {
+    setNeedsLayout()
+  }
+
   public func open() {
     guard let items = self.items else { return }
     opened = true
@@ -168,10 +170,10 @@ open class DPEdgeMenu: UIView {
     
     if menuIsVertical {
       x = (menuPosition == .right) ? superview.frame.size.width : 0 - menuWidth
-      y = (superview.frame.size.height / 2.0) - (menuHeight / 2.0)
+      y = (UIScreen.main.bounds.size.height / 2.0) - (menuHeight / 2.0)
       itemInitialX = menuWidth / 2.0
     } else {
-      x = superview.frame.size.width / 2.0 - (menuWidth / 2.0)
+      x = UIScreen.main.bounds.size.width / 2.0 - (menuWidth / 2.0)
       y = (menuPosition == .top) ? 0 - menuHeight : superview.frame.size.height
     }
     self.frame = CGRect(x: x, y: y, width: menuWidth, height: menuHeight)
@@ -183,7 +185,7 @@ open class DPEdgeMenu: UIView {
           CGPoint(x: itemInitialX, y: (CGFloat(item.offset) * biggestHeight)
             + (CGFloat(item.offset) * itemSpacing) + (biggestHeight / 2.0))
         var position: CGPoint = item.element.layer.position
-        if opened == true {
+        if opened {
           position.x = (menuPosition == .right) ? -menuWidth / 2.0 : menuWidth * 1.5
         } else {
           position.x = menuWidth / 2.0
@@ -193,7 +195,7 @@ open class DPEdgeMenu: UIView {
         item.element.center = CGPoint(x: (CGFloat(item.offset) * biggestWidth)
           + (CGFloat(item.offset) * itemSpacing) + (biggestWidth / 2.0), y: menuHeight / 2.0)
         var position: CGPoint = item.element.layer.position
-        if opened == true {
+        if opened {
           position.y = (menuPosition == .top) ? menuHeight * 1.5 : -menuHeight / 2.0
         } else {
           position.y = menuHeight / 2.0
@@ -208,10 +210,10 @@ open class DPEdgeMenu: UIView {
     guard let keyPath = keyPath, let layer = layer,
       let startValue: CGFloat = layer.value(forKeyPath: keyPath) as? CGFloat,
       let endValue = endValue else {
-      return
+        return
     }
     let animation: CAKeyframeAnimation = CAKeyframeAnimation(keyPath: keyPath)
-    animation.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.linear)
+    animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
     animation.fillMode = CAMediaTimingFillMode.forwards
     animation.isRemovedOnCompletion = false
     animation.duration = animationDuration
@@ -222,7 +224,7 @@ open class DPEdgeMenu: UIView {
     values.reserveCapacity(100)
     for i in 0...Int(steps) {
       values.append(function(CGFloat(animation.duration) * (CGFloat(i) / steps),
-        startValue, delta, CGFloat(animation.duration)))
+                             startValue, delta, CGFloat(animation.duration)))
     }
     animation.values = values
     layer.add(animation, forKey: nil)
